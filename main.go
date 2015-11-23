@@ -24,7 +24,8 @@ func main() {
 		req.Host = target.Host
 		req.URL.Scheme = target.Scheme
 		req.URL.Host = target.Host
-		req.URL.Path = target.RequestURI() + req.URL.Path
+		req.URL.Path = target.RequestURI() + req.URL.Path[1:]
+		log.Println(req.URL)
 	}
 	http.Handle("/", handler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
