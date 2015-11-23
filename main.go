@@ -20,6 +20,12 @@ func main() {
 	}
 
 	handler := httputil.NewSingleHostReverseProxy(target)
+	handler.Director = func(req *http.Request) {
+		req.Host = target.Host
+		req.URL.Scheme = target.Scheme
+		req.URL.Host = target.Host
+		req.URL.Path = target.RequestURI() + req.URL.Path
+	}
 	http.Handle("/", handler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
